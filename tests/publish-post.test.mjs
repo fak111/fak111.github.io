@@ -259,6 +259,29 @@ test("resolves obsidian image embeds from ancestor folders and copies them into 
   );
 });
 
+test("preserves heading levels and ordered lists for article readability", async () => {
+  const { createPostFromMarkdown } = await loadModule();
+
+  const post = createPostFromMarkdown({
+    sourcePath: "/tmp/readability.md",
+    markdown: `## 问题背景
+我先描述现象。
+
+1. 第一条原因
+2. 第二条原因
+3. 第三条原因`,
+    publishedAt: "2026-04-17",
+    existingSlugs: [],
+  });
+
+  assert.match(post.html, /<h2>问题背景<\/h2>/);
+  assert.doesNotMatch(post.html, /<h3>问题背景<\/h3>/);
+  assert.match(post.html, /<ol>/);
+  assert.match(post.html, /<li>第一条原因<\/li>/);
+  assert.match(post.html, /<li>第二条原因<\/li>/);
+  assert.match(post.html, /<li>第三条原因<\/li>/);
+});
+
 function createTempRepo() {
   const repoRoot = mkdtempSync(join(tmpdir(), "fak111-publish-"));
   mkdirSync(join(repoRoot, "assets"), { recursive: true });

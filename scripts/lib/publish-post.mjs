@@ -95,6 +95,7 @@ export function renderMarkdownToHtml(markdown) {
   const output = [];
   let paragraph = [];
   let listItems = [];
+  let orderedListItems = [];
   let codeFence = null;
   let codeLines = [];
 
@@ -114,6 +115,15 @@ export function renderMarkdownToHtml(markdown) {
 
     output.push(`<ul>\n${listItems.map((item) => `  <li>${renderInline(item)}</li>`).join("\n")}\n</ul>`);
     listItems = [];
+  };
+
+  const flushOrderedList = () => {
+    if (!orderedListItems.length) {
+      return;
+    }
+
+    output.push(`<ol>\n${orderedListItems.map((item) => `  <li>${renderInline(item)}</li>`).join("\n")}\n</ol>`);
+    orderedListItems = [];
   };
 
   const flushCodeFence = () => {
@@ -144,12 +154,14 @@ export function renderMarkdownToHtml(markdown) {
     if (!trimmed) {
       flushParagraph();
       flushList();
+      flushOrderedList();
       continue;
     }
 
     if (trimmed.startsWith("```")) {
       flushParagraph();
       flushList();
+      flushOrderedList();
       codeFence = { lang: trimmed.slice(3).trim() };
       continue;
     }
@@ -158,6 +170,7 @@ export function renderMarkdownToHtml(markdown) {
     if (image) {
       flushParagraph();
       flushList();
+      flushOrderedList();
       output.push(renderImageFigure(image));
       continue;
     }
@@ -166,7 +179,8 @@ export function renderMarkdownToHtml(markdown) {
     if (headingMatch) {
       flushParagraph();
       flushList();
-      const level = Math.min(6, headingMatch[1].length + 1);
+      flushOrderedList();
+      const level = Math.min(6, Math.max(2, headingMatch[1].length));
       output.push(`<h${level}>${renderInline(headingMatch[2].trim())}</h${level}>`);
       continue;
     }
@@ -174,7 +188,16 @@ export function renderMarkdownToHtml(markdown) {
     const listMatch = /^-\s+(.+)$/.exec(trimmed);
     if (listMatch) {
       flushParagraph();
+      flushOrderedList();
       listItems.push(listMatch[1]);
+      continue;
+    }
+
+    const orderedListMatch = /^\d+\.\s+(.+)$/.exec(trimmed);
+    if (orderedListMatch) {
+      flushParagraph();
+      flushList();
+      orderedListItems.push(orderedListMatch[1]);
       continue;
     }
 
@@ -183,6 +206,7 @@ export function renderMarkdownToHtml(markdown) {
 
   flushParagraph();
   flushList();
+  flushOrderedList();
   flushCodeFence();
 
   return output.join("\n\n");
