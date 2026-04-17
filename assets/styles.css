@@ -397,13 +397,14 @@ main {
 
 .article-detail__header h1 {
   margin: 0;
-  max-width: 14ch;
+  max-width: 18ch;
   font-family: var(--article-sans);
-  font-size: clamp(2.9rem, 5vw, 4.35rem);
-  font-weight: 780;
-  line-height: 0.95;
-  letter-spacing: -0.05em;
+  font-size: clamp(2.55rem, 4.8vw, 3.9rem);
+  font-weight: 760;
+  line-height: 1.03;
+  letter-spacing: -0.035em;
   text-wrap: balance;
+  overflow-wrap: anywhere;
 }
 
 .article-detail__meta-row {
@@ -498,14 +499,63 @@ main {
   font-family: var(--article-code);
 }
 
-.article-detail__body pre {
-  overflow-x: auto;
-  margin: 0;
-  padding: 22px 24px;
+.article-code-block {
+  display: grid;
+  gap: 12px;
+  padding: 16px 18px 18px;
   border: 1px solid rgba(232, 226, 217, 0.92);
   border-radius: 22px;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(249, 246, 240, 0.94));
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.article-code-block__toolbar {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.article-code-block__copy {
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1px solid rgba(213, 203, 189, 0.92);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--muted);
+  font-family: var(--article-sans);
+  font-size: 0.84rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition: color 120ms ease, border-color 120ms ease, background 120ms ease, transform 120ms ease;
+}
+
+.article-code-block__copy:hover {
+  color: var(--ink);
+  border-color: rgba(52, 112, 184, 0.28);
+}
+
+.article-code-block__copy:active {
+  transform: translateY(1px);
+}
+
+.article-code-block__copy[data-copy-state="copied"] {
+  border-color: rgba(52, 112, 184, 0.82);
+  background: rgba(52, 112, 184, 0.12);
+  color: var(--accent);
+}
+
+.article-code-block__copy[data-copy-state="error"] {
+  border-color: rgba(146, 78, 54, 0.22);
+  background: rgba(146, 78, 54, 0.08);
+  color: #924e36;
+}
+
+.article-detail__body pre {
+  overflow-x: auto;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
 }
 
 .article-detail__body pre code {
@@ -515,7 +565,8 @@ main {
   color: var(--ink);
   font-family: var(--article-code);
   font-size: 0.95rem;
-  line-height: 1.7;
+  line-height: 1.78;
+  tab-size: 2;
 }
 
 .article-image {

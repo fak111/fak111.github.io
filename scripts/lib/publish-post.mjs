@@ -136,8 +136,14 @@ export function renderMarkdownToHtml(markdown) {
     }
 
     const className = codeFence.lang ? ` class="language-${escapeHtml(codeFence.lang)}"` : "";
+    const normalizedCode = escapeHtml(normalizeCodeFenceContent(codeLines));
     output.push(
-      `<pre><code${className}>${escapeHtml(codeLines.join("\n"))}</code></pre>`
+      `<div class="article-code-block">
+  <div class="article-code-block__toolbar">
+    <button class="article-code-block__copy" type="button" data-copy-code-button aria-label="Copy code">Copy</button>
+  </div>
+  <pre><code data-copy-code-source${className}>${normalizedCode}</code></pre>
+</div>`
     );
     codeFence = null;
     codeLines = [];
@@ -214,6 +220,44 @@ export function renderMarkdownToHtml(markdown) {
   flushCodeFence();
 
   return output.join("\n\n");
+}
+
+export function normalizeCodeFenceContent(codeLines) {
+  const lines = [...codeLines];
+
+  while (lines.length && !lines[0].trim()) {
+    lines.shift();
+  }
+
+  while (lines.length && !lines.at(-1)?.trim()) {
+    lines.pop();
+  }
+
+  if (!lines.length) {
+    return "";
+  }
+
+  const indents = lines
+    .filter((line) => line.trim())
+    .map((line) => line.match(/^[ \t]*/)?.[0].length ?? 0);
+  const positiveIndents = indents.filter((indent) => indent > 0);
+  const hasZeroIndent = indents.some((indent) => indent === 0);
+  const baselineIndent =
+    hasZeroIndent && positiveIndents.length ? Math.min(...positiveIndents) : 0;
+  const commonIndent = indents.length ? Math.min(...indents) : 0;
+  const trimIndent = baselineIndent >= 4 ? baselineIndent : commonIndent;
+
+  return lines
+    .map((line) => {
+      if (!line.trim()) {
+        return "";
+      }
+
+      const currentIndent = line.match(/^[ \t]*/)?.[0].length ?? 0;
+      const removeCount = currentIndent >= trimIndent ? trimIndent : commonIndent;
+      return line.slice(removeCount).replace(/[ \t]+$/g, "");
+    })
+    .join("\n");
 }
 
 export function renderHomePage(posts) {

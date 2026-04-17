@@ -282,6 +282,74 @@ test("preserves heading levels and ordered lists for article readability", async
   assert.match(post.html, /<li>第三条原因<\/li>/);
 });
 
+test("renders fenced code blocks with copy controls and normalized indentation", async () => {
+  const { renderMarkdownToHtml } = await loadModule();
+
+  const html = renderMarkdownToHtml(`\`\`\`
+        执行规则：
+
+          1. 先检查现有连接。
+          2. 能复用就复用。
+        \`\`\``);
+
+  assert.match(html, /class="article-code-block"/);
+  assert.match(html, /data-copy-code-button/);
+  assert.match(html, /data-copy-code-source/);
+  assert.match(
+    html,
+    /<code data-copy-code-source>执行规则：\n\n  1\. 先检查现有连接。\n  2\. 能复用就复用。<\/code>/
+  );
+  assert.doesNotMatch(html, /\n        执行规则：/);
+});
+
+test("removes accidental baseline indentation from mixed-indent prompt blocks", async () => {
+  const { normalizeCodeFenceContent } = await loadModule();
+
+  const normalized = normalizeCodeFenceContent([
+    "你现在接管的是一个真实 Chrome 会话。",
+    "",
+    "          目标：继续使用当前浏览器会话。",
+    "",
+    "          1. 先检查现有连接。",
+    "            2. 能复用就复用。",
+  ]);
+
+  assert.equal(
+    normalized,
+    [
+      "你现在接管的是一个真实 Chrome 会话。",
+      "",
+      "目标：继续使用当前浏览器会话。",
+      "",
+      "1. 先检查现有连接。",
+      "  2. 能复用就复用。",
+    ].join("\n")
+  );
+});
+
+test("renders post detail pages with copy buttons for each code block", async () => {
+  const { createPostFromMarkdown, renderPostDetailPage } = await loadModule();
+
+  const post = createPostFromMarkdown({
+    sourcePath: "/tmp/code-ui.md",
+    markdown: `## 命令
+\`\`\`
+post xxx.md
+\`\`\`
+
+\`\`\`
+get 你喷飞书和 x 的那篇
+\`\`\``,
+    publishedAt: "2026-04-17",
+    existingSlugs: [],
+  });
+
+  const detailHtml = renderPostDetailPage(post);
+  const copyButtons = detailHtml.match(/data-copy-code-button/g) ?? [];
+
+  assert.equal(copyButtons.length, 2);
+});
+
 test("reuses the canonical slug and removes duplicate entries when republishing the same title", async () => {
   const { createPostFromMarkdown, mergePostIntoManifest } = await loadModule();
 
