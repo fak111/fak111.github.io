@@ -1,4 +1,4 @@
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, basename, extname, join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { createHash } from "node:crypto";
@@ -69,7 +69,11 @@ export function createPostFromMarkdown({
     title
   );
   const href = `/post/${slug}/`;
-  const html = renderMarkdownToHtml(body);
+  const { body: transformedBody, assets } = prepareMarkdownAssets(body, {
+    sourcePath,
+    slug,
+  });
+  const html = renderMarkdownToHtml(transformedBody);
 
   return {
     slug,
@@ -81,6 +85,7 @@ export function createPostFromMarkdown({
     tags,
     keywords,
     html,
+    assets,
     sourcePath,
   };
 }
@@ -146,6 +151,14 @@ export function renderMarkdownToHtml(markdown) {
       flushParagraph();
       flushList();
       codeFence = { lang: trimmed.slice(3).trim() };
+      continue;
+    }
+
+    const image = parseMarkdownImage(trimmed);
+    if (image) {
+      flushParagraph();
+      flushList();
+      output.push(renderImageFigure(image));
       continue;
     }
 
@@ -401,6 +414,7 @@ export function writeGeneratedSite({ repoRoot = REPO_ROOT, posts, post }) {
 
   const detailDir = resolve(repoRoot, "post", post.slug);
   mkdirSync(detailDir, { recursive: true });
+  writePostAssets(repoRoot, post.assets ?? []);
   writeFileSync(resolve(detailDir, "index.html"), renderPostDetailPage(post), "utf8");
 }
 
@@ -467,9 +481,15 @@ export async function publishPost({
   const mergedPosts = mergePostIntoManifest(existingPosts, post);
   writeGeneratedSite({ repoRoot, posts: mergedPosts, post });
 
-  await exec("git", ["add", "assets/posts.mjs", "index.html", "post/index.html", join("post", post.slug, "index.html")], {
-    cwd: repoRoot,
-  });
+  const filesToAdd = [
+    "assets/posts.mjs",
+    "index.html",
+    "post/index.html",
+    join("post", post.slug, "index.html"),
+    ...(post.assets ?? []).map((asset) => asset.outputPath),
+  ];
+
+  await exec("git", ["add", ...filesToAdd], { cwd: repoRoot });
   await exec("git", ["commit", "-m", buildCommitMessage(post)], { cwd: repoRoot });
   await exec("git", ["push", "origin", "main"], { cwd: repoRoot });
 
@@ -625,7 +645,13 @@ function extractExcerpt(markdown) {
       continue;
     }
 
-    if (/^#+\s+/.test(trimmed) || trimmed.startsWith("- ") || trimmed.startsWith("```")) {
+    if (
+      /^#+\s+/.test(trimmed) ||
+      trimmed.startsWith("- ") ||
+      trimmed.startsWith("```") ||
+      trimmed.startsWith("![[") ||
+      Boolean(parseMarkdownImage(trimmed))
+    ) {
       if (current.length) {
         blocks.push(current.join(" "));
         current = [];
@@ -825,6 +851,161 @@ function renderInline(value) {
   html = html.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
   html = html.replace(/\*([^*]+)\*/g, "<em>$1</em>");
   return html;
+}
+
+function renderImageFigure(image) {
+  return `<figure class="article-image"><img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt)}" loading="lazy"></figure>`;
+}
+
+function parseMarkdownImage(value) {
+  const match = /^!\[([^\]]*)\]\(([^)]+)\)$/.exec(value);
+  if (!match) {
+    return null;
+  }
+
+  return {
+    alt: match[1].trim(),
+    src: match[2].trim(),
+  };
+}
+
+function prepareMarkdownAssets(markdown, { sourcePath, slug }) {
+  const assets = [];
+  const usedOutputPaths = new Set();
+
+  const body = markdown
+    .replace(/\r\n/g, "\n")
+    .split("\n")
+    .map((line) => {
+      const trimmed = line.trim();
+      const obsidianMatch = /^!\[\[([^\]|]+)(?:\|([^\]]+))?\]\]$/.exec(trimmed);
+      if (obsidianMatch) {
+        const reference = obsidianMatch[1].trim();
+        const caption = obsidianMatch[2]?.trim() ?? "";
+        return rewriteAssetReference({
+          sourcePath,
+          slug,
+          reference,
+          alt: caption,
+          assets,
+          usedOutputPaths,
+        });
+      }
+
+      const image = parseMarkdownImage(trimmed);
+      if (image && !isRemoteAssetUrl(image.src)) {
+        return rewriteAssetReference({
+          sourcePath,
+          slug,
+          reference: image.src,
+          alt: image.alt,
+          assets,
+          usedOutputPaths,
+        });
+      }
+
+      return line;
+    })
+    .join("\n");
+
+  return {
+    body,
+    assets,
+  };
+}
+
+function rewriteAssetReference({ sourcePath, slug, reference, alt, assets, usedOutputPaths }) {
+  const resolvedSourcePath = resolveAssetSourcePath(sourcePath, reference);
+  if (!resolvedSourcePath) {
+    throw new Error(`image not found for reference: ${reference}`);
+  }
+
+  const outputPath = allocateAssetOutputPath({
+    slug,
+    sourcePath: resolvedSourcePath,
+    usedOutputPaths,
+    index: assets.length + 1,
+  });
+
+  assets.push({
+    sourcePath: resolvedSourcePath,
+    outputPath,
+  });
+
+  const resolvedAlt = alt || normalizeAssetAlt(resolvedSourcePath);
+  return `![${resolvedAlt}](/${outputPath})`;
+}
+
+function resolveAssetSourcePath(articlePath, reference) {
+  if (!reference) {
+    return null;
+  }
+
+  if (isRemoteAssetUrl(reference)) {
+    return reference;
+  }
+
+  if (reference.startsWith("/")) {
+    return existsSync(reference) ? reference : null;
+  }
+
+  let currentDir = dirname(articlePath);
+  while (true) {
+    const candidate = resolve(currentDir, reference);
+    if (existsSync(candidate)) {
+      return candidate;
+    }
+
+    const parentDir = dirname(currentDir);
+    if (parentDir === currentDir) {
+      break;
+    }
+    currentDir = parentDir;
+  }
+
+  return null;
+}
+
+function allocateAssetOutputPath({ slug, sourcePath, usedOutputPaths, index }) {
+  const extension = extname(sourcePath).toLowerCase();
+  const baseName = basename(sourcePath, extension);
+  const normalizedBaseName = slugify(baseName) || `image-${index}`;
+  const outputDir = join("images", "posts", slug);
+  let candidate = join(outputDir, `${normalizedBaseName}${extension}`);
+
+  if (!usedOutputPaths.has(candidate)) {
+    usedOutputPaths.add(candidate);
+    return candidate;
+  }
+
+  let counter = 2;
+  while (usedOutputPaths.has(join(outputDir, `${normalizedBaseName}-${counter}${extension}`))) {
+    counter += 1;
+  }
+
+  candidate = join(outputDir, `${normalizedBaseName}-${counter}${extension}`);
+  usedOutputPaths.add(candidate);
+  return candidate;
+}
+
+function normalizeAssetAlt(sourcePath) {
+  return basename(sourcePath, extname(sourcePath)).replace(/[-_]+/g, " ").trim();
+}
+
+function writePostAssets(repoRoot, assets) {
+  for (const asset of assets) {
+    if (isRemoteAssetUrl(asset.sourcePath)) {
+      continue;
+    }
+
+    const targetPath = resolve(repoRoot, asset.outputPath);
+    mkdirSync(dirname(targetPath), { recursive: true });
+    copyFileSync(asset.sourcePath, targetPath);
+  }
+}
+
+function isRemoteAssetUrl(value) {
+  return /^https?:\/\//i.test(value);
 }
 
 function escapeHtml(value) {

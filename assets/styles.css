@@ -433,6 +433,19 @@ main {
   text-underline-offset: 0.18em;
 }
 
+.article-image {
+  margin: 10px 0 6px;
+}
+
+.article-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: #ffffff;
+}
+
 .search-shell {
   margin-top: 18px;
 }

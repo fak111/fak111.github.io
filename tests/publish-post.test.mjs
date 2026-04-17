@@ -207,6 +207,58 @@ test("keeps a newly published same-day post ahead of older same-day posts", asyn
   );
 });
 
+test("resolves obsidian image embeds from ancestor folders and copies them into the site", async () => {
+  const { createPostFromMarkdown, writeGeneratedSite } = await loadModule();
+  const repoRoot = createTempRepo();
+  const vaultRoot = mkdtempSync(join(tmpdir(), "fak111-vault-"));
+  const articleDir = join(vaultRoot, "raw", "articles");
+  mkdirSync(articleDir, { recursive: true });
+
+  const imageOnePath = join(vaultRoot, "Pasted image 20260417181951.png");
+  const imageTwoPath = join(vaultRoot, "Pasted image 20260417182424.png");
+  writeFileSync(imageOnePath, "image-one", "utf8");
+  writeFileSync(imageTwoPath, "image-two", "utf8");
+
+  const sourcePath = join(articleDir, "how i work with codex to solve a CD problem.md");
+  const markdown = `## 背景
+第一段说明。
+![[Pasted image 20260417181951.png]]
+第二段说明。
+![[Pasted image 20260417182424.png]]`;
+  writeFileSync(sourcePath, markdown, "utf8");
+
+  const post = createPostFromMarkdown({
+    sourcePath,
+    markdown,
+    publishedAt: "2026-04-17",
+    existingSlugs: [],
+  });
+
+  assert.equal(post.assets.length, 2);
+  assert.equal(post.assets[0].sourcePath, imageOnePath);
+  assert.equal(post.assets[0].outputPath, "images/posts/how-i-work-with-codex-to-solve-a-cd-problem/pasted-image-20260417181951.png");
+  assert.match(post.html, /<figure class="article-image">/);
+  assert.match(post.html, /src="\/images\/posts\/how-i-work-with-codex-to-solve-a-cd-problem\/pasted-image-20260417181951\.png"/);
+  assert.match(post.html, /src="\/images\/posts\/how-i-work-with-codex-to-solve-a-cd-problem\/pasted-image-20260417182424\.png"/);
+
+  writeGeneratedSite({ repoRoot, posts: [post], post });
+
+  assert.equal(
+    readFileSync(
+      join(repoRoot, "images", "posts", "how-i-work-with-codex-to-solve-a-cd-problem", "pasted-image-20260417181951.png"),
+      "utf8"
+    ),
+    "image-one"
+  );
+  assert.equal(
+    readFileSync(
+      join(repoRoot, "images", "posts", "how-i-work-with-codex-to-solve-a-cd-problem", "pasted-image-20260417182424.png"),
+      "utf8"
+    ),
+    "image-two"
+  );
+});
+
 function createTempRepo() {
   const repoRoot = mkdtempSync(join(tmpdir(), "fak111-publish-"));
   mkdirSync(join(repoRoot, "assets"), { recursive: true });
