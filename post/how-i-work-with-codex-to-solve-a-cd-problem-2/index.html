@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>how i work with codex to solve a CD problem | fak111</title>
+  <meta name="description" content="我花了5小时让codex做CD一直失败，最后发现问题根本不在代码，而在AI的‘行为模式’。">
+  <link rel="stylesheet" href="/assets/styles.css">
+  <link rel="icon" href="/images/profile.jpg">
+</head>
+
+<body data-page="post">
+  <div class="page-shell">
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="site-brand" href="/">fak111</a>
+        <div class="site-header__actions">
+          <button class="site-header__toggle" type="button" data-menu-toggle aria-expanded="false"
+            aria-controls="site-nav" aria-label="Open Menu">
+            <svg class="menu-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 7h16M4 12h16M4 17h16" stroke-width="1.8" stroke-linecap="round"></path>
+            </svg>
+            <svg class="close-icon hidden" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 6l12 12M18 6L6 18" stroke-width="1.8" stroke-linecap="round"></path>
+            </svg>
+            <span class="sr-only">Open Menu</span>
+          </button>
+          <nav class="site-nav" id="site-nav" data-site-nav>
+            <a href="/post/">Posts</a>
+            <a href="/about/">About</a>
+            <a class="nav-icon" href="/search/" aria-label="Search">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="11" cy="11" r="6.5" stroke-width="1.8"></circle>
+                <path d="M16 16l4.5 4.5" stroke-width="1.8" stroke-linecap="round"></path>
+              </svg>
+            </a>
+            <a class="site-nav__muted" href="/talk/">Talk</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <article class="article-detail">
+        <header class="article-detail__header">
+          <h1>how i work with codex to solve a CD problem</h1>
+          <div class="article-detail__meta-row">
+            <p class="post-meta"><time datetime="2026-04-17">17 Apr, 2026</time> · 4 min read</p>
+            <a class="article-detail__action" href="https://github.com/fak111/fak111.github.io" target="_blank" rel="noreferrer">View on GitHub</a>
+          </div>
+        </header>
+
+        <div class="article-detail__body">
+          <h2>引子</h2>
+          
+          <p>我花了5小时让codex做CD一直失败，最后发现问题根本不在代码，而在AI的‘行为模式’。</p>
+          
+          <h2>问题背景</h2>
+          
+          <p>本地代码ok了，用公司ci服务器，然后cd自己的服务器。ci没什么问题，cd问题很多。我让codex干了几2-3个小时，把能用的pua也用了，还是效果不好，没能解决问题。</p>
+          
+          <figure class="article-image"><img src="/images/posts/how-i-work-with-codex-to-solve-a-cd-problem-2/pasted-image-20260417181951.png" alt="Pasted image 20260417181951" loading="lazy"></figure>
+          
+          <figure class="article-image"><img src="/images/posts/how-i-work-with-codex-to-solve-a-cd-problem-2/pasted-image-20260417182424.png" alt="Pasted image 20260417182424" loading="lazy"></figure>
+          
+          <h2>解决问题</h2>
+          
+          <p>于是我就怒了，喷了下codex废物，然后默默的自己分析起了原因：</p>
+          
+          <ol>
+            <li>表面努力，codex一直在错误的路径观察-重试，看似很努力但没暖用。</li>
+            <li>上下文污染，一直负反馈在该窗口，彻底污染了模型上下文，跳脱不出来。</li>
+            <li>控制浏览器，一个很烦的环境是通过web-access skills 的 cdp-proxy.mjs -&gt; Chrome DevTools Protocol -&gt;  Chrome。一直要让我点击允许。</li>
+          </ol>
+          
+          <figure class="article-image"><img src="/images/posts/how-i-work-with-codex-to-solve-a-cd-problem-2/pasted-image-20260417184058.png" alt="Pasted image 20260417184058" loading="lazy"></figure>
+          
+          <p>针对上面三个问题，我没有直接丢弃那个上下文爆炸的窗口，而是把窗口的失败case蒸馏出来，物尽其用。 第一波蒸馏问题原因</p>
+          
+          <figure class="article-image"><img src="/images/posts/how-i-work-with-codex-to-solve-a-cd-problem-2/pasted-image-20260417184438.png" alt="Pasted image 20260417184438" loading="lazy"></figure>
+          
+          <p>第二波蒸馏失败教训</p>
+          
+          <pre><code>已经写进 [AGENTS.md](/Users/zfc/code/XHSWebCrawler/new/xhs_33/AGENTS.md:970)。
+          
+          这次新增的是 `14.3 连续失败后的人工接管规则`，核心约束就是你刚定的版本：
+          
+          - 同一目标连续失败 `2` 次后，第三次前必须检查是否有新观察面
+          - 若满足“无新观察面”硬清单中的任意 `2` 条，就**禁止继续重试**
+          - 必须请求人类接管
+          - 且必须交付结构化 handoff，不允许用“再试一次”“继续推进中”糊过去
+          
+          我这次只落了规则，没有继续扩写到 success 文档，也没有提交 git。通知已发送。</code></pre>
+          
+          <figure class="article-image"><img src="/images/posts/how-i-work-with-codex-to-solve-a-cd-problem-2/pasted-image-20260417184236.png" alt="Pasted image 20260417184236" loading="lazy"></figure>
+          
+          <p>蒸馏完才心情变好点，继续来把问题梳理出来上下文。整体文案结构如下 1.给你控制浏览器的法宝 2.上一轮ai的教训 3.这一轮的嘱托</p>
+          
+          <h2>分享经验</h2>
+          
+          <p>当然是成功解决了问题，要不然我不会写这个帖子。</p>
+          
+          <figure class="article-image"><img src="/images/posts/how-i-work-with-codex-to-solve-a-cd-problem-2/pasted-image-20260417185305.png" alt="Pasted image 20260417185305" loading="lazy"></figure>
+          
+          <p>这一轮沉淀出一个很实用的范式：<strong>通过约束连接生命周期来“指挥”AI控制浏览器</strong>。 整体链路是：zfc-chrome → 本地脚本 → web-access 的 cdp-proxy.mjs → Chrome DevTools Protocol → 真实 Chrome。 下面这段 prompt，本质是在规定 AI 的操作边界，让它在既有连接内行动，而不是不断重来，从而实现更稳定、可控的浏览器自动化。</p>
+          
+          <pre><code>你现在接管的是一个**已经授权过的真实 Chrome 会话**。默认策略不是重连，而是**优先复用现有连接**。
+          
+          目标：继续使用当前浏览器会话，不触发新的“允许远程调试”弹窗，后续所有操作都基于现成连接完成。
+          
+          执行规则：
+          
+          1. 开始前只先检查现有代理或 CDP 连接是否仍可用。
+              
+          2. 如果现有连接可用，就只复用它工作，不要重启 Chrome，不要新开调试实例，不要运行会触发重新建连的探测。
+              
+          3. 如果现有连接失效，不要擅自重连或重新申请授权，先明确告知用户：当前授权连接已断，需要人工确认是否允许重新建立连接。
+              
+          4. 简单读页、切页、截图、点击等操作，优先使用低扰动方式，避免破坏当前会话。
+              
+          
+          成功标准：完成浏览器任务、全程不触发新授权弹窗，并在汇报中说明是否复用了原连接、是否出现新授权、验证了哪些页面结果。</code></pre>
+        </div>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <p><a href="/post/">← Back to Posts</a></p>
+      <div class="site-footer__links">
+        <a href="/about/">About</a>
+        <a href="https://github.com/fak111" target="_blank" rel="noreferrer">GitHub</a>
+        <a href="mailto:zhuliderb@gmail.com">zhuliderb@gmail.com</a>
+      </div>
+      <p>© <span data-current-year></span> fak111.github.io</p>
+    </footer>
+  </div>
+
+  <script type="module" src="/assets/site.mjs"></script>
+</body>
+
+</html>
