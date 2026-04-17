@@ -4,7 +4,7 @@
 
 ## 宣传视频
 
-assets/fak111-promo.mp4
+https://github.com/user-attachments/assets/36134141-f7cc-4eab-9baf-979c04452518
 
 ## 发布
 
