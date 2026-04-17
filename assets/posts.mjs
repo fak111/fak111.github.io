@@ -1,5 +1,32 @@
 export const POSTS = [
   {
+    "slug": "how-can-i-build-a-blog-in-just-one-afternoon",
+    "href": "/post/how-can-i-build-a-blog-in-just-one-afternoon/",
+    "title": "How can I build a blog in just one afternoon",
+    "excerpt": "yeah,我是无敌的,七小时前想打造一款个人blog，很快就撸出来了。",
+    "date": "2026-04-17",
+    "readingTime": "1 min read",
+    "tags": [
+      "AI",
+      "博客",
+      "内容发布"
+    ],
+    "keywords": [
+      "AI",
+      "ai",
+      "博客",
+      "内容发布",
+      "how",
+      "can",
+      "build",
+      "blog",
+      "in",
+      "just",
+      "one",
+      "afternoon"
+    ]
+  },
+  {
     "slug": "how-i-work-with-codex-to-solve-a-cd-problem",
     "href": "/post/how-i-work-with-codex-to-solve-a-cd-problem/",
     "title": "how i work with codex to solve a CD problem",

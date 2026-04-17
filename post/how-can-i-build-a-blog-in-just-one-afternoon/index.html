@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How can I build a blog in just one afternoon | fak111</title>
+  <meta name="description" content="yeah,我是无敌的,七小时前想打造一款个人blog，很快就撸出来了。">
+  <link rel="stylesheet" href="/assets/styles.css?v=20260417-article-polish">
+  <link rel="icon" href="/images/profile.jpg">
+</head>
+
+<body data-page="post">
+  <div class="page-shell">
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="site-brand" href="/">fak111</a>
+        <div class="site-header__actions">
+          <button class="site-header__toggle" type="button" data-menu-toggle aria-expanded="false"
+            aria-controls="site-nav" aria-label="Open Menu">
+            <svg class="menu-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 7h16M4 12h16M4 17h16" stroke-width="1.8" stroke-linecap="round"></path>
+            </svg>
+            <svg class="close-icon hidden" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 6l12 12M18 6L6 18" stroke-width="1.8" stroke-linecap="round"></path>
+            </svg>
+            <span class="sr-only">Open Menu</span>
+          </button>
+          <nav class="site-nav" id="site-nav" data-site-nav>
+            <a href="/post/">Posts</a>
+            <a href="/about/">About</a>
+            <a class="nav-icon" href="/search/" aria-label="Search">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="11" cy="11" r="6.5" stroke-width="1.8"></circle>
+                <path d="M16 16l4.5 4.5" stroke-width="1.8" stroke-linecap="round"></path>
+              </svg>
+            </a>
+            <a class="site-nav__muted" href="/talk/">Talk</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <article class="article-detail">
+        <header class="article-detail__header">
+          <h1>How can I build a blog in just one afternoon</h1>
+          <div class="article-detail__meta-row">
+            <p class="post-meta"><time datetime="2026-04-17">17 Apr, 2026</time> · 1 min read</p>
+            <a class="article-detail__action" href="https://github.com/fak111/fak111.github.io" target="_blank" rel="noreferrer">View on GitHub</a>
+          </div>
+        </header>
+
+        <div class="article-detail__body">
+          <p>yeah,我是无敌的,七小时前想打造一款个人blog，很快就撸出来了。</p>
+          
+          <figure class="article-image"><img src="/images/posts/how-can-i-build-a-blog-in-just-one-afternoon/pasted-image-20260417215610.png" alt="Pasted image 20260417215610" loading="lazy"></figure>
+          
+          <p>虽然自己是联系两年半的编程老手，对这种纯前端blog网站按理说应该手拿把捏吧。实际上还是有些难度的,踩过坑的，特来分享下经验。</p>
+          
+          <h2>前置条件</h2>
+          
+          <ul>
+            <li>codex（i hate cc,a/）</li>
+            <li>prompt</li>
+            <li>github</li>
+            <li>chrome mcp skills</li>
+            <li>一个参考博客（如https://github.com/steipete/steipete.me）</li>
+          </ul>
+          
+          <h2>过程</h2>
+          
+          <p>踩坑图：开始还想着让ai浏览器截图一张一张学，后面发现学个p，直接对着抄就完事了。提示词加上https://github.com/steipete/steipete.me 直接对着抄！！！</p>
+          
+          <figure class="article-image"><img src="/images/posts/how-can-i-build-a-blog-in-just-one-afternoon/pasted-image-20260417220152.png" alt="Pasted image 20260417220152" loading="lazy"></figure>
+          
+          <h2>感言</h2>
+          
+          <p>我的blog有特性，比如全局post一个文档即可上传！代码全部开源在：https://github.com/fak111/fak111.github.io，欢迎来抄！</p>
+          
+          <div class="article-code-block">
+            <div class="article-code-block__toolbar">
+              <button class="article-code-block__copy" type="button" data-copy-code-button aria-label="Copy code">Copy</button>
+            </div>
+            <pre><code data-copy-code-source>post local.md</code></pre>
+          </div>
+        </div>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <p><a href="/post/">← Back to Posts</a></p>
+      <div class="site-footer__links">
+        <a href="/about/">About</a>
+        <a href="https://github.com/fak111" target="_blank" rel="noreferrer">GitHub</a>
+        <a href="mailto:zhuliderb@gmail.com">zhuliderb@gmail.com</a>
+      </div>
+      <p>© <span data-current-year></span> fak111.github.io</p>
+    </footer>
+  </div>
+
+  <script type="module" src="/assets/site.mjs"></script>
+</body>
+
+</html>
