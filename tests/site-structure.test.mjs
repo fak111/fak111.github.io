@@ -75,7 +75,7 @@ test("creates the required site pages with steipete-like minimal nav", async () 
 test("uses author-card home layout instead of landing-page modules", () => {
   const homeHtml = read("index.html");
 
-  assert.match(homeHtml, /href="\/assets\/styles\.css"/);
+  assert.match(homeHtml, /href="\/assets\/styles\.css(?:\?v=[^"]+)?"/);
   assert.match(homeHtml, /src="\/assets\/site\.mjs"/);
   assert.match(homeHtml, /class="profile-card"/);
   assert.match(homeHtml, /class="post-list"/);

@@ -10,6 +10,7 @@ const execFileAsync = promisify(execFile);
 const REPO_ROOT = "/Users/zfc/code/fak111.github.io";
 const SITE_URL = "https://fak111.github.io";
 const REPO_URL = "https://github.com/fak111/fak111.github.io";
+const STYLESHEET_HREF = "/assets/styles.css?v=20260417-article-polish";
 const SEARCH_HINT = "MCP”、“AI” 或 “方法论";
 const MONTH_NAMES = [
   "January",
@@ -246,7 +247,7 @@ export function renderHomePage(posts) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>fak111 | 观点、方法与价值观</title>
   <meta name="description" content="fak111 的个人博客，长期输出观点文章、方法论和价值观，并为后续 AI 集成打基础。">
-  <link rel="stylesheet" href="/assets/styles.css">
+  <link rel="stylesheet" href="${STYLESHEET_HREF}">
   <link rel="icon" href="/images/profile.jpg">
 </head>
 
@@ -337,7 +338,7 @@ ${monthSections}
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Posts | fak111</title>
   <meta name="description" content="fak111 的文章列表，包含观点文章、学习复盘和方法论记录。">
-  <link rel="stylesheet" href="/assets/styles.css">
+  <link rel="stylesheet" href="${STYLESHEET_HREF}">
   <link rel="icon" href="/images/profile.jpg">
 </head>
 
@@ -380,7 +381,7 @@ export function renderPostDetailPage(post) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${escapeHtml(post.title)} | fak111</title>
   <meta name="description" content="${escapeHtml(post.excerpt)}">
-  <link rel="stylesheet" href="/assets/styles.css">
+  <link rel="stylesheet" href="${STYLESHEET_HREF}">
   <link rel="icon" href="/images/profile.jpg">
 </head>
 
