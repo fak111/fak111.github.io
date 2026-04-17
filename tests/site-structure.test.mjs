@@ -10,27 +10,27 @@ const navLinks = ["/", "/post/", "/search/", "/about/", "/talk/"];
 const pages = [
   {
     file: "index.html",
-    title: "小镇数字青年 | 观点、方法与价值观",
+    title: "fak111 | 观点、方法与价值观",
   },
   {
     file: "about/index.html",
-    title: "About | 小镇数字青年",
+    title: "About | fak111",
   },
   {
     file: "post/index.html",
-    title: "Posts | 小镇数字青年",
+    title: "Posts | fak111",
   },
   {
     file: "search/index.html",
-    title: "Search | 小镇数字青年",
+    title: "Search | fak111",
   },
   {
     file: "talk/index.html",
-    title: "Talk | 小镇数字青年",
+    title: "Talk | fak111",
   },
   {
     file: "post/mcp-learning-journey/index.html",
-    title: "四期视频后，我终于搞懂了 MCP | 小镇数字青年",
+    title: "四期视频后，我终于搞懂了 MCP | fak111",
   },
 ];
 
@@ -51,7 +51,7 @@ test("creates the required site pages with steipete-like minimal nav", () => {
       assert.match(html, new RegExp(`href="${href.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"`));
     }
 
-    assert.match(html, />小镇数字青年</);
+    assert.match(html, />fak111</);
     assert.match(html, />Posts</);
     assert.match(html, />About</);
     assert.match(html, /aria-label="Search"/);
