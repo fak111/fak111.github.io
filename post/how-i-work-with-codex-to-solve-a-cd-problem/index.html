@@ -52,11 +52,11 @@
         </header>
 
         <div class="article-detail__body">
-          <h3>引子</h3>
+          <h2>引子</h2>
           
           <p>我花了5小时让codex做CD一直失败，最后发现问题根本不在代码，而在AI的‘行为模式’。</p>
           
-          <h3>问题背景</h3>
+          <h2>问题背景</h2>
           
           <p>本地代码ok了，用公司ci服务器，然后cd自己的服务器。ci没什么问题，cd问题很多。我让codex干了几2-3个小时，把能用的pua也用了，还是效果不好，没能解决问题。</p>
           
@@ -64,9 +64,15 @@
           
           <figure class="article-image"><img src="/images/posts/how-i-work-with-codex-to-solve-a-cd-problem/pasted-image-20260417182424.png" alt="Pasted image 20260417182424" loading="lazy"></figure>
           
-          <h3>解决问题</h3>
+          <h2>解决问题</h2>
           
-          <p>于是我就怒了，喷了下codex废物，然后默默的自己分析起了原因： 1. 表面努力，codex一直在错误的路径观察-重试，看似很努力但没暖用。 2. 上下文污染，一直负反馈在该窗口，彻底污染了模型上下文，跳脱不出来。 3. 控制浏览器，一个很烦的环境是通过web-access skills 的 cdp-proxy.mjs -&gt; Chrome DevTools Protocol -&gt;  Chrome。一直要让我点击允许。</p>
+          <p>于是我就怒了，喷了下codex废物，然后默默的自己分析起了原因：</p>
+          
+          <ol>
+            <li>表面努力，codex一直在错误的路径观察-重试，看似很努力但没暖用。</li>
+            <li>上下文污染，一直负反馈在该窗口，彻底污染了模型上下文，跳脱不出来。</li>
+            <li>控制浏览器，一个很烦的环境是通过web-access skills 的 cdp-proxy.mjs -&gt; Chrome DevTools Protocol -&gt;  Chrome。一直要让我点击允许。</li>
+          </ol>
           
           <figure class="article-image"><img src="/images/posts/how-i-work-with-codex-to-solve-a-cd-problem/pasted-image-20260417184058.png" alt="Pasted image 20260417184058" loading="lazy"></figure>
           
@@ -91,7 +97,7 @@
           
           <p>蒸馏完才心情变好点，继续来把问题梳理出来上下文。整体文案结构如下 1.给你控制浏览器的法宝 2.上一轮ai的教训 3.这一轮的嘱托</p>
           
-          <h3>分享经验</h3>
+          <h2>分享经验</h2>
           
           <p>当然是成功解决了问题，要不然我不会写这个帖子。</p>
           

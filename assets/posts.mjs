@@ -1,28 +1,5 @@
 export const POSTS = [
   {
-    "slug": "how-i-work-with-codex-to-solve-a-cd-problem-2",
-    "href": "/post/how-i-work-with-codex-to-solve-a-cd-problem-2/",
-    "title": "how i work with codex to solve a CD problem",
-    "excerpt": "我花了5小时让codex做CD一直失败，最后发现问题根本不在代码，而在AI的‘行为模式’。",
-    "date": "2026-04-17",
-    "readingTime": "4 min read",
-    "tags": [
-      "AI"
-    ],
-    "keywords": [
-      "AI",
-      "ai",
-      "how",
-      "work",
-      "with",
-      "codex",
-      "to",
-      "solve",
-      "cd",
-      "problem"
-    ]
-  },
-  {
     "slug": "how-i-work-with-codex-to-solve-a-cd-problem",
     "href": "/post/how-i-work-with-codex-to-solve-a-cd-problem/",
     "title": "how i work with codex to solve a CD problem",
