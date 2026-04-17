@@ -2,12 +2,13 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { pathToFileURL } from "node:url";
 
 const root = "/Users/zfc/code/fak111.github.io";
 
 const navLinks = ["/", "/post/", "/search/", "/about/", "/talk/"];
 
-const pages = [
+const basePages = [
   {
     file: "index.html",
     title: "fak111 | 观点、方法与价值观",
@@ -28,17 +29,28 @@ const pages = [
     file: "talk/index.html",
     title: "Talk | fak111",
   },
-  {
-    file: "post/mcp-learning-journey/index.html",
-    title: "四期视频后，我终于搞懂了 MCP | fak111",
-  },
 ];
 
 function read(relativePath) {
   return readFileSync(resolve(root, relativePath), "utf8");
 }
 
-test("creates the required site pages with steipete-like minimal nav", () => {
+async function loadPosts() {
+  const modulePath = pathToFileURL(resolve(root, "assets/posts.mjs")).href;
+  const module = await import(`${modulePath}?t=${Date.now()}`);
+  return module.POSTS ?? [];
+}
+
+test("creates the required site pages with steipete-like minimal nav", async () => {
+  const posts = await loadPosts();
+  const pages = [
+    ...basePages,
+    ...posts.map((post) => ({
+      file: `post/${post.slug}/index.html`,
+      title: `${post.title} | fak111`,
+    })),
+  ];
+
   for (const page of pages) {
     const absolutePath = resolve(root, page.file);
     assert.equal(existsSync(absolutePath), true, `${page.file} should exist`);
@@ -87,7 +99,9 @@ test("provides shared data for search and post discovery", () => {
   assert.equal(existsSync(postsModulePath), true, "assets/posts.mjs should exist");
 
   const postsModuleSource = read("assets/posts.mjs");
-  assert.match(postsModuleSource, /slug:\s*"mcp-learning-journey"/);
-  assert.match(postsModuleSource, /title:\s*"四期视频后，我终于搞懂了 MCP"/);
-  assert.match(postsModuleSource, /href:\s*"\/post\/mcp-learning-journey\/"/);
+  assert.match(postsModuleSource, /export const POSTS = \[/);
+  assert.match(postsModuleSource, /(?:^|\s)(?:slug|"slug"):\s*"/m);
+  assert.match(postsModuleSource, /(?:^|\s)(?:href|"href"):\s*"\/post\//m);
+  assert.match(postsModuleSource, /(?:^|\s)(?:title|"title"):\s*"/m);
+  assert.match(postsModuleSource, /(?:^|\s)(?:keywords|"keywords"):\s*\[/m);
 });
