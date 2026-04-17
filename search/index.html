@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search | 小镇数字青年</title>
+  <meta name="description" content="搜索小镇数字青年博客中的文章与关键词。">
+  <link rel="stylesheet" href="/assets/styles.css">
+</head>
+
+<body data-page="search">
+  <div class="page-shell">
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="site-brand" href="/">
+          <img src="/images/profile.jpg" alt="小镇数字青年头像" class="site-brand__avatar">
+          <span class="site-brand__copy">
+            <span class="site-brand__title">小镇数字青年</span>
+            <span class="site-brand__subtitle">观点、方法与价值观的长期存档</span>
+          </span>
+        </a>
+        <button class="site-header__toggle" type="button" data-menu-toggle aria-expanded="false"
+          aria-controls="site-nav">
+          菜单
+        </button>
+        <nav class="site-nav" id="site-nav" data-site-nav>
+          <a href="/">Home</a>
+          <a href="/post/">Post</a>
+          <a href="/search/">Search</a>
+          <a href="/about/">About</a>
+          <a href="/talk/">Talk</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero hero--inner">
+        <p class="eyebrow">Search</p>
+        <h1>先把文章找出来，再谈知识工作流。</h1>
+        <p class="hero__lead">首版搜索保持轻量：支持按标题、摘要、标签和关键词进行前端过滤，先让内容可找。</p>
+      </section>
+
+      <section class="section search-shell">
+        <form class="search-form" data-search-form>
+          <label class="search-form__label" for="search-input">输入关键词</label>
+          <div class="search-form__row">
+            <input id="search-input" class="search-form__input" data-search-input type="search" name="q"
+              placeholder="例如：MCP、AI、方法论">
+            <button class="button" type="submit">搜索</button>
+          </div>
+        </form>
+        <p class="search-meta" data-search-meta>当前显示全部文章。</p>
+        <div class="search-results" data-search-results></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>搜索首版先服务“找得到”，复杂能力后续再加。</p>
+      <div class="site-footer__links">
+        <a href="/">Home</a>
+        <a href="/post/">Post</a>
+        <a href="/about/">About</a>
+        <a href="/talk/">Talk</a>
+      </div>
+      <p class="site-footer__copy">© <span data-current-year></span> fak111.github.io</p>
+    </footer>
+  </div>
+
+  <script type="module" src="/assets/site.mjs"></script>
+  <script type="module" src="/assets/search.mjs"></script>
+</body>
+
+</html>
