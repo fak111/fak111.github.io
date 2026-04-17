@@ -177,6 +177,36 @@ test("publishes generated files, commits, pushes, and waits for the article URL"
   assert.deepEqual(fetchCalls, ["https://fak111.github.io/post/launch-sequence/"]);
 });
 
+test("keeps a newly published same-day post ahead of older same-day posts", async () => {
+  const { createPostFromMarkdown, mergePostIntoManifest, renderHomePage } = await loadModule();
+
+  const newPost = createPostFromMarkdown({
+    sourcePath: "/tmp/Zen and publishing.md",
+    markdown: sampleMarkdown,
+    publishedAt: "2026-04-17",
+    existingSlugs: ["alpha-existing"],
+  });
+  const existingPost = {
+    slug: "alpha-existing",
+    href: "/post/alpha-existing/",
+    title: "Alpha existing",
+    excerpt: "older post",
+    date: "2026-04-17",
+    readingTime: "1 min read",
+    tags: ["旧文"],
+    keywords: ["old"],
+  };
+
+  const mergedPosts = mergePostIntoManifest([existingPost], newPost);
+  const homeHtml = renderHomePage(mergedPosts);
+
+  assert.equal(mergedPosts[0].slug, newPost.slug);
+  assert.ok(
+    homeHtml.indexOf(newPost.title) < homeHtml.indexOf(existingPost.title),
+    "new same-day post should stay ahead of older same-day post"
+  );
+});
+
 function createTempRepo() {
   const repoRoot = mkdtempSync(join(tmpdir(), "fak111-publish-"));
   mkdirSync(join(repoRoot, "assets"), { recursive: true });

@@ -717,11 +717,7 @@ function shortHash(value) {
 
 function sortPosts(posts) {
   return [...posts].sort((left, right) => {
-    const dateSort = right.date.localeCompare(left.date);
-    if (dateSort !== 0) {
-      return dateSort;
-    }
-    return left.title.localeCompare(right.title, "zh-CN");
+    return right.date.localeCompare(left.date);
   });
 }
 
