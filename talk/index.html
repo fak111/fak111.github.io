@@ -14,66 +14,67 @@
   <div class="page-shell">
     <header class="site-header">
       <div class="site-header__inner">
-        <a class="site-brand" href="/">
-          <img src="/images/profile.jpg" alt="小镇数字青年头像" class="site-brand__avatar">
-          <span class="site-brand__copy">
-            <span class="site-brand__title">小镇数字青年</span>
-            <span class="site-brand__subtitle">观点、方法与价值观的长期存档</span>
-          </span>
-        </a>
-        <button class="site-header__toggle" type="button" data-menu-toggle aria-expanded="false"
-          aria-controls="site-nav">
-          菜单
-        </button>
-        <nav class="site-nav" id="site-nav" data-site-nav>
-          <a href="/">Home</a>
-          <a href="/post/">Post</a>
-          <a href="/search/">Search</a>
-          <a href="/about/">About</a>
-          <a href="/talk/">Talk</a>
-        </nav>
+        <a class="site-brand" href="/">小镇数字青年</a>
+        <div class="site-header__actions">
+          <button class="site-header__toggle" type="button" data-menu-toggle aria-expanded="false"
+            aria-controls="site-nav" aria-label="Open Menu">
+            <svg class="menu-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 7h16M4 12h16M4 17h16" stroke-width="1.8" stroke-linecap="round"></path>
+            </svg>
+            <svg class="close-icon hidden" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 6l12 12M18 6L6 18" stroke-width="1.8" stroke-linecap="round"></path>
+            </svg>
+            <span class="sr-only">Open Menu</span>
+          </button>
+          <nav class="site-nav" id="site-nav" data-site-nav>
+            <a href="/post/">Posts</a>
+            <a href="/about/">About</a>
+            <a class="nav-icon" href="/search/" aria-label="Search">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="11" cy="11" r="6.5" stroke-width="1.8"></circle>
+                <path d="M16 16l4.5 4.5" stroke-width="1.8" stroke-linecap="round"></path>
+              </svg>
+            </a>
+            <a class="site-nav__muted" href="/talk/">Talk</a>
+          </nav>
+        </div>
       </div>
     </header>
 
     <main>
-      <section class="hero hero--inner">
-        <p class="eyebrow">Talk</p>
-        <h1>这个栏目先留着，未来会长成公开对话区。</h1>
-        <p class="hero__lead">当前阶段不把 Talk 做复杂。它先承担轻量更新、公开问答和内容实验入口的角色，保证结构存在，但不抢首版站点建设的优先级。</p>
+      <section class="page-intro">
+        <h1>Talk</h1>
+        <p>这个栏目先保留着。当前阶段不做复杂产品化，只作为公开对话、轻量更新和未来内容实验的入口。</p>
       </section>
 
-      <section class="section section--split">
-        <article class="note-panel">
-          <p class="eyebrow">Now</p>
-          <h2>现在的 Talk 是什么</h2>
-          <ul class="bullet-list">
-            <li>公开对话的预留入口。</li>
-            <li>未来短内容、问答或视频摘要的承接页。</li>
-            <li>不破坏当前站点结构，同时不给首版引入复杂度。</li>
-          </ul>
-        </article>
-        <article class="note-panel note-panel--soft">
-          <p class="eyebrow">Reach Out</p>
-          <h2>如果你想先找到我</h2>
-          <div class="contact-list">
-            <a href="mailto:zhuliderb@gmail.com">发邮件给我</a>
-            <a href="https://github.com/fak111" target="_blank" rel="noreferrer">GitHub / fak111</a>
-            <a href="https://x.com/DerbZhuli0411" target="_blank" rel="noreferrer">X / DerbZhuli0411</a>
-            <a href="https://space.bilibili.com/1617153613/lists" target="_blank" rel="noreferrer">Bilibili 视频合集</a>
-          </div>
-        </article>
+      <section class="prose-section">
+        <h2>现在的定位</h2>
+        <ul class="simple-list">
+          <li>公开对话的预留入口。</li>
+          <li>未来短内容、问答或视频摘要的承接页。</li>
+          <li>不破坏首版博客结构，同时不给当前阶段引入多余复杂度。</li>
+        </ul>
+      </section>
+
+      <section class="prose-section">
+        <h2>如果你想先找到我</h2>
+        <div class="contact-links">
+          <a href="mailto:zhuliderb@gmail.com">发邮件给我</a>
+          <a href="https://github.com/fak111" target="_blank" rel="noreferrer">GitHub / fak111</a>
+          <a href="https://x.com/DerbZhuli0411" target="_blank" rel="noreferrer">X / DerbZhuli0411</a>
+          <a href="https://space.bilibili.com/1617153613/lists" target="_blank" rel="noreferrer">Bilibili 视频合集</a>
+        </div>
       </section>
     </main>
 
     <footer class="site-footer">
-      <p>Talk 先保留，后续再扩展交互和更新机制。</p>
+      <p>Talk 先轻量存在，之后再决定要不要长成独立内容形态。</p>
       <div class="site-footer__links">
-        <a href="/">Home</a>
-        <a href="/post/">Post</a>
-        <a href="/search/">Search</a>
+        <a href="/post/">Posts</a>
         <a href="/about/">About</a>
+        <a href="mailto:zhuliderb@gmail.com">Email</a>
       </div>
-      <p class="site-footer__copy">© <span data-current-year></span> fak111.github.io</p>
+      <p>© <span data-current-year></span> fak111.github.io</p>
     </footer>
   </div>
 

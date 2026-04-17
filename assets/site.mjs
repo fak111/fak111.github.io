@@ -1,23 +1,40 @@
 const menuToggle = document.querySelector("[data-menu-toggle]");
 const siteNav = document.querySelector("[data-site-nav]");
+const menuIcon = menuToggle?.querySelector(".menu-icon");
+const closeIcon = menuToggle?.querySelector(".close-icon");
+
+function syncMenuState(isOpen) {
+  if (!menuToggle || !siteNav) {
+    return;
+  }
+
+  menuToggle.setAttribute("aria-expanded", String(isOpen));
+  menuToggle.setAttribute("aria-label", isOpen ? "Close Menu" : "Open Menu");
+
+  if (menuIcon && closeIcon) {
+    menuIcon.classList.toggle("hidden", isOpen);
+    closeIcon.classList.toggle("hidden", !isOpen);
+  }
+}
 
 if (menuToggle && siteNav) {
   menuToggle.addEventListener("click", () => {
     const isOpen = siteNav.classList.toggle("is-open");
-    menuToggle.setAttribute("aria-expanded", String(isOpen));
+    syncMenuState(isOpen);
   });
 
   siteNav.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", () => {
       siteNav.classList.remove("is-open");
-      menuToggle.setAttribute("aria-expanded", "false");
+      syncMenuState(false);
     });
   });
+
+  syncMenuState(false);
 }
 
 const activePage = document.body.dataset.page;
 const activeMap = {
-  home: "/",
   post: "/post/",
   search: "/search/",
   about: "/about/",

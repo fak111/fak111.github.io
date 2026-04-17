@@ -14,102 +14,77 @@
   <div class="page-shell">
     <header class="site-header">
       <div class="site-header__inner">
-        <a class="site-brand" href="/">
-          <img src="/images/profile.jpg" alt="小镇数字青年头像" class="site-brand__avatar">
-          <span class="site-brand__copy">
-            <span class="site-brand__title">小镇数字青年</span>
-            <span class="site-brand__subtitle">观点、方法与价值观的长期存档</span>
-          </span>
-        </a>
-        <button class="site-header__toggle" type="button" data-menu-toggle aria-expanded="false"
-          aria-controls="site-nav">
-          菜单
-        </button>
-        <nav class="site-nav" id="site-nav" data-site-nav>
-          <a href="/">Home</a>
-          <a href="/post/">Post</a>
-          <a href="/search/">Search</a>
-          <a href="/about/">About</a>
-          <a href="/talk/">Talk</a>
-        </nav>
+        <a class="site-brand" href="/">小镇数字青年</a>
+        <div class="site-header__actions">
+          <button class="site-header__toggle" type="button" data-menu-toggle aria-expanded="false"
+            aria-controls="site-nav" aria-label="Open Menu">
+            <svg class="menu-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 7h16M4 12h16M4 17h16" stroke-width="1.8" stroke-linecap="round"></path>
+            </svg>
+            <svg class="close-icon hidden" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 6l12 12M18 6L6 18" stroke-width="1.8" stroke-linecap="round"></path>
+            </svg>
+            <span class="sr-only">Open Menu</span>
+          </button>
+          <nav class="site-nav" id="site-nav" data-site-nav>
+            <a href="/post/">Posts</a>
+            <a href="/about/">About</a>
+            <a class="nav-icon" href="/search/" aria-label="Search">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="11" cy="11" r="6.5" stroke-width="1.8"></circle>
+                <path d="M16 16l4.5 4.5" stroke-width="1.8" stroke-linecap="round"></path>
+              </svg>
+            </a>
+            <a class="site-nav__muted" href="/talk/">Talk</a>
+          </nav>
+        </div>
       </div>
     </header>
 
     <main>
-      <section class="hero hero--inner">
-        <p class="eyebrow">About</p>
-        <h1>这是一个给长期表达准备的地方。</h1>
-        <p class="hero__lead">
-          我是这个站点唯一的目标用户，也是唯一的作者。这里不追求“内容平台式增长”，而是追求可控、可积累、可反复调用的表达系统。
-        </p>
+      <section class="page-intro">
+        <h1>About</h1>
+        <p>这是一个属于我自己的博客站点。它不追求平台式喧闹，而追求可控、可积累、可反复调用的表达系统。</p>
       </section>
 
-      <section class="section section--split">
-        <article class="note-panel">
-          <p class="eyebrow">Positioning</p>
-          <h2>我为什么要做这个博客</h2>
-          <p>平台给分发，但不会给真正的数字主权。写在这里的内容，才是我自己的资产，可以被长期维护、反复引用，也能成为未来 AI 工具链的稳定输入。</p>
-        </article>
-        <article class="note-panel note-panel--soft">
-          <p class="eyebrow">Current Focus</p>
-          <h2>当前重点</h2>
-          <ul class="bullet-list">
-            <li>把博客网站本身搭清楚，桌面和移动端都能正常工作。</li>
-            <li>先建立文章和栏目结构，再逐步接入 AI 协作能力。</li>
-            <li>让每篇内容都能沉淀成未来可复用的观点和方法。</li>
-          </ul>
-        </article>
+      <section class="prose-section">
+        <h2>为什么要有这个站点</h2>
+        <p>平台能给分发，但不会给真正的数字主权。写在这里的内容，才是我自己的资产，可以被长期维护、反复引用，也能成为未来 AI 工具链的稳定输入。</p>
       </section>
 
-      <section class="section">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">Beliefs</p>
-            <h2>我希望这个站点长期坚持的三件事</h2>
-          </div>
+      <section class="prose-section">
+        <h2>当前重点</h2>
+        <ul class="simple-list">
+          <li>先把博客网站本身搭清楚，网页端和移动端都正常工作。</li>
+          <li>先建立文章与栏目结构，再逐步接入 AI 协作能力。</li>
+          <li>让每篇内容都能沉淀成未来可复用的观点和方法。</li>
+        </ul>
+      </section>
+
+      <section class="prose-section">
+        <h2>我希望长期坚持的三件事</h2>
+        <ul class="simple-list">
+          <li>表达要有判断，不只做转述和摘要。</li>
+          <li>方法要可执行，而不是只看起来聪明。</li>
+          <li>价值观要可追溯，知道为什么做、为什么不做。</li>
+        </ul>
+        <div class="contact-links">
+          <a href="mailto:zhuliderb@gmail.com">zhuliderb@gmail.com</a>
+          <a href="https://github.com/fak111" target="_blank" rel="noreferrer">GitHub / fak111</a>
+          <a href="https://x.com/DerbZhuli0411" target="_blank" rel="noreferrer">X / DerbZhuli0411</a>
+          <a href="https://space.bilibili.com/1617153613/lists" target="_blank" rel="noreferrer">Bilibili</a>
         </div>
-        <div class="feature-grid">
-          <article class="feature-card">
-            <p class="feature-card__index">01</p>
-            <h3>表达要有判断</h3>
-            <p>不是简单转述，而是把真实判断写出来，哪怕它不够讨好平台。</p>
-          </article>
-          <article class="feature-card">
-            <p class="feature-card__index">02</p>
-            <h3>方法要可执行</h3>
-            <p>我更关心那些能落地复用的工作流，而不是只看起来聪明的概念。</p>
-          </article>
-          <article class="feature-card">
-            <p class="feature-card__index">03</p>
-            <h3>价值观要可追溯</h3>
-            <p>做什么、不做什么，以及为什么，这些都会慢慢沉淀成网站的长期气质。</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="section">
-        <article class="note-panel">
-          <p class="eyebrow">Contact</p>
-          <h2>你可以在这些地方找到我</h2>
-          <div class="contact-list">
-            <a href="mailto:zhuliderb@gmail.com">zhuliderb@gmail.com</a>
-            <a href="https://github.com/fak111" target="_blank" rel="noreferrer">GitHub / fak111</a>
-            <a href="https://x.com/DerbZhuli0411" target="_blank" rel="noreferrer">X / DerbZhuli0411</a>
-            <a href="https://space.bilibili.com/1617153613/lists" target="_blank" rel="noreferrer">Bilibili 视频合集</a>
-          </div>
-        </article>
       </section>
     </main>
 
     <footer class="site-footer">
-      <p>About 页不是简历，而是这个博客的方向声明。</p>
+      <p>About 页更像一份方向声明，而不是履历表。</p>
       <div class="site-footer__links">
-        <a href="/">Home</a>
-        <a href="/post/">Post</a>
-        <a href="/search/">Search</a>
+        <a href="/post/">Posts</a>
         <a href="/talk/">Talk</a>
+        <a href="mailto:zhuliderb@gmail.com">Email</a>
       </div>
-      <p class="site-footer__copy">© <span data-current-year></span> fak111.github.io</p>
+      <p>© <span data-current-year></span> fak111.github.io</p>
     </footer>
   </div>
 

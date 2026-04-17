@@ -14,41 +14,46 @@
   <div class="page-shell">
     <header class="site-header">
       <div class="site-header__inner">
-        <a class="site-brand" href="/">
-          <img src="/images/profile.jpg" alt="小镇数字青年头像" class="site-brand__avatar">
-          <span class="site-brand__copy">
-            <span class="site-brand__title">小镇数字青年</span>
-            <span class="site-brand__subtitle">观点、方法与价值观的长期存档</span>
-          </span>
-        </a>
-        <button class="site-header__toggle" type="button" data-menu-toggle aria-expanded="false"
-          aria-controls="site-nav">
-          菜单
-        </button>
-        <nav class="site-nav" id="site-nav" data-site-nav>
-          <a href="/">Home</a>
-          <a href="/post/">Post</a>
-          <a href="/search/">Search</a>
-          <a href="/about/">About</a>
-          <a href="/talk/">Talk</a>
-        </nav>
+        <a class="site-brand" href="/">小镇数字青年</a>
+        <div class="site-header__actions">
+          <button class="site-header__toggle" type="button" data-menu-toggle aria-expanded="false"
+            aria-controls="site-nav" aria-label="Open Menu">
+            <svg class="menu-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 7h16M4 12h16M4 17h16" stroke-width="1.8" stroke-linecap="round"></path>
+            </svg>
+            <svg class="close-icon hidden" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 6l12 12M18 6L6 18" stroke-width="1.8" stroke-linecap="round"></path>
+            </svg>
+            <span class="sr-only">Open Menu</span>
+          </button>
+          <nav class="site-nav" id="site-nav" data-site-nav>
+            <a href="/post/">Posts</a>
+            <a href="/about/">About</a>
+            <a class="nav-icon" href="/search/" aria-label="Search">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="11" cy="11" r="6.5" stroke-width="1.8"></circle>
+                <path d="M16 16l4.5 4.5" stroke-width="1.8" stroke-linecap="round"></path>
+              </svg>
+            </a>
+            <a class="site-nav__muted" href="/talk/">Talk</a>
+          </nav>
+        </div>
       </div>
     </header>
 
     <main>
-      <section class="hero hero--inner">
-        <p class="eyebrow">Search</p>
-        <h1>先把文章找出来，再谈知识工作流。</h1>
-        <p class="hero__lead">首版搜索保持轻量：支持按标题、摘要、标签和关键词进行前端过滤，先让内容可找。</p>
+      <section class="page-intro">
+        <h1>Search</h1>
+        <p>首版搜索保持轻量，先把文章标题、摘要、标签和关键词找得到。</p>
       </section>
 
-      <section class="section search-shell">
+      <section class="search-shell">
         <form class="search-form" data-search-form>
           <label class="search-form__label" for="search-input">输入关键词</label>
           <div class="search-form__row">
             <input id="search-input" class="search-form__input" data-search-input type="search" name="q"
               placeholder="例如：MCP、AI、方法论">
-            <button class="button" type="submit">搜索</button>
+            <button class="search-form__button" type="submit">Go</button>
           </div>
         </form>
         <p class="search-meta" data-search-meta>当前显示全部文章。</p>
@@ -57,14 +62,13 @@
     </main>
 
     <footer class="site-footer">
-      <p>搜索首版先服务“找得到”，复杂能力后续再加。</p>
+      <p>Search 先服务“找得到”，复杂能力后续再加。</p>
       <div class="site-footer__links">
-        <a href="/">Home</a>
-        <a href="/post/">Post</a>
+        <a href="/post/">Posts</a>
         <a href="/about/">About</a>
-        <a href="/talk/">Talk</a>
+        <a href="mailto:zhuliderb@gmail.com">Email</a>
       </div>
-      <p class="site-footer__copy">© <span data-current-year></span> fak111.github.io</p>
+      <p>© <span data-current-year></span> fak111.github.io</p>
     </footer>
   </div>
 
