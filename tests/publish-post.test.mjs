@@ -170,7 +170,7 @@ test("publishes generated files, commits, pushes, and waits for the article URL"
   assert.equal(existsSync(join(repoRoot, "post", "launch-sequence", "index.html")), true);
   assert.deepEqual(gitCalls, [
     ["git", "status", "--short"],
-    ["git", "add", "assets/posts.mjs", "index.html", "post/index.html", "post/launch-sequence/index.html"],
+    ["git", "add", "-A"],
     ["git", "commit", "-m", "feat: publish Launch sequence"],
     ["git", "push", "origin", "main"],
   ]);
@@ -280,6 +280,47 @@ test("preserves heading levels and ordered lists for article readability", async
   assert.match(post.html, /<li>第一条原因<\/li>/);
   assert.match(post.html, /<li>第二条原因<\/li>/);
   assert.match(post.html, /<li>第三条原因<\/li>/);
+});
+
+test("reuses the canonical slug and removes duplicate entries when republishing the same title", async () => {
+  const { createPostFromMarkdown, mergePostIntoManifest } = await loadModule();
+
+  const existingPosts = [
+    {
+      slug: "how-i-work-with-codex-to-solve-a-cd-problem",
+      href: "/post/how-i-work-with-codex-to-solve-a-cd-problem/",
+      title: "how i work with codex to solve a CD problem",
+      excerpt: "old excerpt",
+      date: "2026-04-17",
+      readingTime: "4 min read",
+      tags: ["AI"],
+      keywords: ["codex"],
+    },
+    {
+      slug: "how-i-work-with-codex-to-solve-a-cd-problem-2",
+      href: "/post/how-i-work-with-codex-to-solve-a-cd-problem-2/",
+      title: "how i work with codex to solve a CD problem",
+      excerpt: "duplicate excerpt",
+      date: "2026-04-17",
+      readingTime: "4 min read",
+      tags: ["AI"],
+      keywords: ["codex"],
+    },
+  ];
+
+  const post = createPostFromMarkdown({
+    sourcePath: "/tmp/how i work with codex to solve a CD problem.md",
+    markdown: "## 问题背景\n这是一版更好的正文。",
+    publishedAt: "2026-04-17",
+    existingSlugs: existingPosts.map((item) => item.slug),
+    existingPosts,
+  });
+
+  const mergedPosts = mergePostIntoManifest(existingPosts, post);
+
+  assert.equal(post.slug, "how-i-work-with-codex-to-solve-a-cd-problem");
+  assert.equal(mergedPosts.filter((item) => item.title === post.title).length, 1);
+  assert.equal(mergedPosts[0].slug, "how-i-work-with-codex-to-solve-a-cd-problem");
 });
 
 function createTempRepo() {

@@ -1,4 +1,4 @@
-import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, basename, extname, join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { createHash } from "node:crypto";
@@ -54,6 +54,7 @@ export function createPostFromMarkdown({
   markdown,
   publishedAt,
   existingSlugs = [],
+  existingPosts = [],
 }) {
   const { frontMatter, body } = splitFrontMatter(markdown);
   const rawTitle = frontMatter.title ?? extractTitleFromFilename(sourcePath);
@@ -63,10 +64,12 @@ export function createPostFromMarkdown({
   const excerpt = frontMatter.excerpt ?? extractExcerpt(body);
   const keywords = buildKeywords(title, excerpt, tags, body);
   const readingTime = formatReadingTime(body);
+  const canonicalExistingSlug = findCanonicalExistingSlug(existingPosts, title);
   const slug = ensureUniqueSlug(
-    frontMatter.slug ?? slugify(frontMatter.slugSource ?? title),
+    canonicalExistingSlug ?? frontMatter.slug ?? slugify(frontMatter.slugSource ?? title),
     existingSlugs,
-    title
+    title,
+    canonicalExistingSlug
   );
   const href = `/post/${slug}/`;
   const { body: transformedBody, assets } = prepareMarkdownAssets(body, {
@@ -443,7 +446,9 @@ export function writeGeneratedSite({ repoRoot = REPO_ROOT, posts, post }) {
 }
 
 export function mergePostIntoManifest(existingPosts, nextPost) {
-  const withoutDuplicate = existingPosts.filter((post) => post.slug !== nextPost.slug);
+  const withoutDuplicate = existingPosts.filter(
+    (post) => post.slug !== nextPost.slug && post.title !== nextPost.title
+  );
   return sortPosts([sanitizeStoredPost(nextPost), ...withoutDuplicate.map(sanitizeStoredPost)]);
 }
 
@@ -500,20 +505,15 @@ export async function publishPost({
     markdown,
     publishedAt,
     existingSlugs: existingPosts.map((item) => item.slug),
+    existingPosts,
   });
 
+  const staleDuplicatePosts = findDuplicatePosts(existingPosts, post);
   const mergedPosts = mergePostIntoManifest(existingPosts, post);
+  removeStaleDuplicateOutputs(repoRoot, staleDuplicatePosts);
   writeGeneratedSite({ repoRoot, posts: mergedPosts, post });
 
-  const filesToAdd = [
-    "assets/posts.mjs",
-    "index.html",
-    "post/index.html",
-    join("post", post.slug, "index.html"),
-    ...(post.assets ?? []).map((asset) => asset.outputPath),
-  ];
-
-  await exec("git", ["add", ...filesToAdd], { cwd: repoRoot });
+  await exec("git", ["add", "-A"], { cwd: repoRoot });
   await exec("git", ["commit", "-m", buildCommitMessage(post)], { cwd: repoRoot });
   await exec("git", ["push", "origin", "main"], { cwd: repoRoot });
 
@@ -746,9 +746,12 @@ function slugify(value) {
   return "";
 }
 
-function ensureUniqueSlug(initialSlug, existingSlugs, fallbackSeed) {
+function ensureUniqueSlug(initialSlug, existingSlugs, fallbackSeed, allowedSlug = null) {
   const slugs = new Set(existingSlugs);
   const baseSlug = initialSlug || slugify(fallbackSeed) || `post-${shortHash(fallbackSeed)}`;
+  if (allowedSlug && allowedSlug === baseSlug) {
+    return baseSlug;
+  }
   if (!slugs.has(baseSlug)) {
     return baseSlug;
   }
@@ -759,6 +762,32 @@ function ensureUniqueSlug(initialSlug, existingSlugs, fallbackSeed) {
   }
 
   return `${baseSlug}-${counter}`;
+}
+
+function findCanonicalExistingSlug(existingPosts, title) {
+  const matches = existingPosts.filter((post) => post.title === title);
+  if (!matches.length) {
+    return null;
+  }
+
+  const preferredSlug = slugify(title);
+  const exactMatch = matches.find((post) => post.slug === preferredSlug);
+  if (exactMatch) {
+    return exactMatch.slug;
+  }
+
+  return [...matches].sort((left, right) => left.slug.length - right.slug.length)[0].slug;
+}
+
+function findDuplicatePosts(existingPosts, nextPost) {
+  return existingPosts.filter((post) => post.title === nextPost.title && post.slug !== nextPost.slug);
+}
+
+function removeStaleDuplicateOutputs(repoRoot, posts) {
+  for (const post of posts) {
+    rmSync(resolve(repoRoot, "post", post.slug), { recursive: true, force: true });
+    rmSync(resolve(repoRoot, "images", "posts", post.slug), { recursive: true, force: true });
+  }
 }
 
 function shortHash(value) {
