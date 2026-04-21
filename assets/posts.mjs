@@ -1,5 +1,26 @@
 export const POSTS = [
   {
+    "slug": "how-can-i-start-a-business-with-low-cost",
+    "href": "/post/how-can-i-start-a-business-with-low-cost/",
+    "title": "How can I start a business with low cost?",
+    "excerpt": "先说结论最终失败了——但这个低成本创业的过程很值得分享给大家的。",
+    "date": "2026-04-21",
+    "readingTime": "3 min read",
+    "tags": [
+      "随笔"
+    ],
+    "keywords": [
+      "随笔",
+      "how",
+      "can",
+      "start",
+      "business",
+      "with",
+      "low",
+      "cost"
+    ]
+  },
+  {
     "slug": "how-can-i-build-a-blog-in-just-one-afternoon",
     "href": "/post/how-can-i-build-a-blog-in-just-one-afternoon/",
     "title": "How can I build a blog in just one afternoon",
