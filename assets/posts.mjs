@@ -1,5 +1,30 @@
 export const POSTS = [
   {
+    "slug": "3-5-fill",
+    "href": "/post/3-5-fill/",
+    "title": "罗福莉的3.5小时访谈高能点（个人导向）_fill",
+    "excerpt": "[v1 14:57](https://www.bilibili.com/video/BV1iVoVBgERD/?t=897) openclaw激发中层模型的潜力，而且他是开源的agent框架，方便魔改。 agent框架：人和模型的中间...",
+    "date": "2026-04-26",
+    "readingTime": "3 min read",
+    "tags": [
+      "AI"
+    ],
+    "keywords": [
+      "AI",
+      "ai",
+      "fill",
+      "v1",
+      "14",
+      "57",
+      "https",
+      "www",
+      "bilibili",
+      "com",
+      "video",
+      "bv1ivovbgerd"
+    ]
+  },
+  {
     "slug": "how-can-i-start-a-business-with-low-cost",
     "href": "/post/how-can-i-start-a-business-with-low-cost/",
     "title": "How can I start a business with low cost?",
