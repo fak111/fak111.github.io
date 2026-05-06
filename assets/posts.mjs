@@ -1,5 +1,22 @@
 export const POSTS = [
   {
+    "slug": "codex-ppt",
+    "href": "/post/codex-ppt/",
+    "title": "如何通过‘自省’用codex做好ppt",
+    "excerpt": "我现在是硕士快毕业，正处于准备论文答辩的期间。做 PPT 是一个很令人头疼的过程。 刚开始做第一轮交互时，效果很不好，这时候我就在质疑 CodeX 到底有没有做 PPT 的能力。其实这时候就犯了初学者经常犯的问题：认为模型做不到一些事情。",
+    "date": "2026-05-06",
+    "readingTime": "1 min read",
+    "tags": [
+      "AI"
+    ],
+    "keywords": [
+      "AI",
+      "ai",
+      "codex",
+      "ppt"
+    ]
+  },
+  {
     "slug": "3-5-fill",
     "href": "/post/3-5-fill/",
     "title": "罗福莉的3.5小时访谈高能点（个人导向）_fill",
