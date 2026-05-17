@@ -1,5 +1,19 @@
 export const POSTS = [
   {
+    "slug": "post-5780f789",
+    "href": "/post/post-5780f789/",
+    "title": "一个好的产品的是什么？",
+    "excerpt": "真正好用的一款产品，它不会是让用户主动去适应它，而是已经润物无声地融入到了用户的使用习惯中。比如像“访达”一样，当你自然而然地需要找文件、看路径时，你会很自然地点击它。这听起来似乎只是些基础功能，但其实正是这些基础功能做得足够舒服，才...",
+    "date": "2026-05-17",
+    "readingTime": "2 min read",
+    "tags": [
+      "内容发布"
+    ],
+    "keywords": [
+      "内容发布"
+    ]
+  },
+  {
     "slug": "codex-ppt",
     "href": "/post/codex-ppt/",
     "title": "如何通过‘自省’用codex做好ppt",
