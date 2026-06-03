@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>秒爆 Nexus 文本节点右键不能复制</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f5f2;
+      --ink: #171717;
+      --muted: #5d625d;
+      --line: #d9ddd5;
+      --panel: #ffffff;
+      --accent: #9a5b12;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 32px 18px 48px;
+    }
+
+    header {
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      margin: 28px 0 12px;
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 8px 0;
+      color: var(--muted);
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 18px 0 24px;
+    }
+
+    .fact {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 12px;
+      min-height: 92px;
+    }
+
+    .fact strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--accent);
+      font-size: 13px;
+    }
+
+    video,
+    img {
+      display: block;
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #000;
+    }
+
+    .media {
+      margin: 0 0 22px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 12px;
+    }
+
+    .media p {
+      margin: 10px 0 0;
+      font-size: 13px;
+    }
+
+    .shots {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    a {
+      color: #075bb5;
+    }
+
+    @media (max-width: 760px) {
+      main {
+        padding: 22px 12px 36px;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
+
+      .summary,
+      .shots {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>秒爆 Nexus 文本节点右键不能复制</h1>
+      <p>项目页：miaobao.intelligrow.cn/editor/proj-1780313414701-hw3mdr</p>
+      <p>记录时间：2026-06-03。证据来自同一浏览器页面的实际选中文本和右键菜单状态。</p>
+    </header>
+
+    <section class="summary" aria-label="复现结论">
+      <div class="fact">
+        <strong>操作</strong>
+        文本节点内选中一段正文，然后右键。
+      </div>
+      <div class="fact">
+        <strong>实际结果</strong>
+        右键菜单只出现「AI 生成图片」「剪切节点」「复制节点」「删除节点」。
+      </div>
+      <div class="fact">
+        <strong>问题</strong>
+        菜单没有「复制」「Copy」或「复制文本」，无法通过右键复制已选中的文字。
+      </div>
+    </section>
+
+    <section class="media">
+      <h2>Focused Evidence</h2>
+      <video controls preload="metadata" poster="keyframe.jpg">
+        <source src="demo.mp4" type="video/mp4">
+      </video>
+      <p>画面先展示文本已选中，随后展示右键菜单；注意菜单项没有文本复制入口。</p>
+    </section>
+
+    <section class="media">
+      <h2>Full Context</h2>
+      <video controls preload="metadata" poster="after-menu.png">
+        <source src="full-context.mp4" type="video/mp4">
+      </video>
+      <p>保留完整编辑器上下文，便于确认页面、节点和选区位置。</p>
+    </section>
+
+    <section>
+      <h2>Screenshots</h2>
+      <div class="shots">
+        <figure class="media">
+          <img src="before-selected.png" alt="文本节点内文字已选中，右键菜单尚未打开">
+          <p>Before: 文本节点内正文已选中。</p>
+        </figure>
+        <figure class="media">
+          <img src="after-menu.png" alt="选中文本后右键菜单显示节点操作，没有复制文本入口">
+          <p>After: 右键菜单只有节点操作，没有复制文本入口。</p>
+        </figure>
+      </div>
+    </section>
+
+    <section>
+      <h2>Raw Files</h2>
+      <p>
+        <a href="demo.mp4">focused video</a> /
+        <a href="full-context.mp4">full-context video</a> /
+        <a href="keyframe.jpg">keyframe</a> /
+        <a href="before-selected.png">before screenshot</a> /
+        <a href="after-menu.png">after screenshot</a>
+      </p>
+    </section>
+  </main>
+</body>
+</html>
